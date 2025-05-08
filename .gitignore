@@ -3,6 +3,14 @@
 # dependencies
 node_modules/
 
+package-lock.json
+yarn-error.log
+yarn-debug.log
+yarn.lock
+package.json
+pnpm-lock.yaml
+pnpm-lock.yaml
+
 # Expo
 .expo/
 dist/

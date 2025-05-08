@@ -1,0 +1,125 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "password": "password123",
+      "phone": "+255 712 345 678",
+      "devices": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "password": "password456",
+      "phone": "+255 787 654 321",
+      "devices": [
+        4
+      ]
+    },
+    {
+      "id": "6a15",
+      "name": "Allord Archard",
+      "email": "drarchardallord@gmail.com",
+      "password": "Nancy15012007",
+      "phone": "0711353844",
+      "devices": []
+    },
+    {
+      "id": "4d6d",
+      "name": "David  David",
+      "email": "david@gmail.com",
+      "password": "Pass1122",
+      "phone": "0788546312",
+      "devices": []
+    },
+    {
+      "id": "c38e",
+      "name": "Coffee Coffee",
+      "email": "coffee@gmail.com",
+      "password": "Coffee123",
+      "phone": "0711353845",
+      "devices": []
+    },
+    {
+      "id": "486b",
+      "name": "Mouse Mouse",
+      "email": "davidq@gmail.com",
+      "password": "password",
+      "phone": "0741356425",
+      "devices": []
+    }
+  ],
+  "devices": [
+    {
+      "id": "1",
+      "name": "Living Room Sensor",
+      "type": "Motion Sensor",
+      "status": "online",
+      "lastActive": "2023-05-06T14:30:00Z",
+      "batteryLevel": 85,
+      "location": "Living Room"
+    },
+    {
+      "id": "2",
+      "name": "Kitchen Smoke Detector",
+      "type": "Smoke Detector",
+      "status": "online",
+      "lastActive": "2023-05-06T15:45:00Z",
+      "batteryLevel": 92,
+      "location": "Kitchen"
+    },
+    {
+      "id": "3",
+      "name": "Bedroom Motion Sensor",
+      "type": "Motion Sensor",
+      "status": "online",
+      "lastActive": "2023-05-06T16:20:00Z",
+      "batteryLevel": 78,
+      "location": "Bedroom"
+    },
+    {
+      "id": "4",
+      "name": "Garage Door Sensor",
+      "type": "Contact Sensor",
+      "status": "offline",
+      "lastActive": "2023-05-05T09:15:00Z",
+      "batteryLevel": 23,
+      "location": "Garage"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "1",
+      "deviceId": 2,
+      "type": "smoke_detected",
+      "message": "Smoke detected in Kitchen",
+      "severity": "high",
+      "timestamp": "2023-05-04T18:30:00Z",
+      "resolved": true
+    },
+    {
+      "id": "2",
+      "deviceId": 1,
+      "type": "motion_detected",
+      "message": "Unexpected motion detected in Living Room",
+      "severity": "medium",
+      "timestamp": "2023-05-05T02:15:00Z",
+      "resolved": true
+    },
+    {
+      "id": "3",
+      "deviceId": 4,
+      "type": "battery_low",
+      "message": "Battery level critical for Garage Door Sensor",
+      "severity": "low",
+      "timestamp": "2023-05-06T10:45:00Z",
+      "resolved": false
+    }
+  ]
+}
