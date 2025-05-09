@@ -1,14 +1,19 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '@/context/AuthContext'
 
-const Devices = () => {
+const device = () => {
+
+  const user = useContext(AuthContext).user;
+
   return (
     <View>
-      <Text>Devices</Text>
+      <Text>device</Text>
+      <Text>User : {user ? JSON.stringify(user) : 'No user'} </Text>
     </View>
   )
 }
 
-export default Devices
+export default device
 
 const styles = StyleSheet.create({})
