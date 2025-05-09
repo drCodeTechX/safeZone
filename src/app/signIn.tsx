@@ -1,12 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Image, ImageSourcePropType, ActivityIndicator } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Mail, Lock, Eye, EyeOff} from "lucide-react-native"
-import { useNavigation } from "@react-navigation/native"
-import { useUser } from "../context/UserContext"
 import { useRouter } from "expo-router"
+import { AuthContext } from "@/context/AuthContext" 
 
 //Import Images
 const logo: ImageSourcePropType = require("../assets/images/shield.png");
@@ -15,8 +14,6 @@ const logo: ImageSourcePropType = require("../assets/images/shield.png");
 const API_URL = "http://192.168.1.100:3000";
 
 export default function LoginScreen() {
-  const navigation = useNavigation()
-  const { setCurrentUser } = useUser()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -26,6 +23,9 @@ export default function LoginScreen() {
 
   //router 
   const router = useRouter();
+
+  //authContext
+  const auth = useContext(AuthContext);
 
   // Validate form fields
   const validateForm = () => {
@@ -70,8 +70,11 @@ export default function LoginScreen() {
         
         if (user) {
           // Set the current user in context
-          setCurrentUser(user)
+          // setCurrentUser(user)
+          auth.logIn(user)
+
           // navigation.navigate("LoginSuccess" as never)
+          
           router.replace('/LoginSuccess');
         } else {
           setLoginError("Invalid email or password")
@@ -190,7 +193,7 @@ export default function LoginScreen() {
             {/* Sign up link */}
             <View className="flex-row justify-center mt-6">
               <Text className="text-gray-400">Don't have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Signup" as never)} disabled={isLoading}>
+              <TouchableOpacity onPress={() => router.replace('/signUp')} disabled={isLoading}>
                 <Text className="text-green-500 font-bold">Sign Up</Text>
               </TouchableOpacity>
             </View>

@@ -8,8 +8,6 @@ import { useRouter } from "expo-router"
 //image Imports
 const logo : ImageSourcePropType = require("../assets/images/shield.png");
 
-
-
 // JSON Server API URL
 const API_URL = "http://192.168.1.100:3000";
 
@@ -37,6 +35,39 @@ export default function SignupScreen() {
     confirmPassword: "",
   })
   const [submitError, setSubmitError] = useState("")
+
+  // Function to format name (lowercase with first letter capitalized)
+  const formatName = (name: string): string => {
+    if (!name) return "";
+    name = name.trim().toLowerCase();
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+
+  // Validate and format first name
+  const handleFirstNameChange = (text: string) => {
+    const trimmedText = text.trim();
+    
+    if (trimmedText.includes(" ")) {
+      setErrors({...errors, firstName: "Please enter only one word for first name"});
+    } else {
+      setErrors({...errors, firstName: ""});
+    }
+    
+    setFirstName(text);
+  }
+
+  // Validate and format last name
+  const handleLastNameChange = (text: string) => {
+    const trimmedText = text.trim();
+    
+    if (trimmedText.includes(" ")) {
+      setErrors({...errors, lastName: "Please enter only one word for last name"});
+    } else {
+      setErrors({...errors, lastName: ""});
+    }
+    
+    setLastName(text);
+  }
 
   // Check if email already exists in the database
   const checkEmailExists = async (email: string) => {
@@ -97,13 +128,21 @@ export default function SignupScreen() {
       confirmPassword: "",
     }
 
+    // First name validation
     if (!firstName) {
       newErrors.firstName = "First name is required"
       isValid = false
+    } else if (firstName.trim().includes(" ")) {
+      newErrors.firstName = "Please enter only one word for first name"
+      isValid = false
     }
 
+    // Last name validation
     if (!lastName) {
       newErrors.lastName = "Last name is required"
+      isValid = false
+    } else if (lastName.trim().includes(" ")) {
+      newErrors.lastName = "Please enter only one word for last name"
       isValid = false
     }
 
@@ -156,9 +195,13 @@ export default function SignupScreen() {
     
     try {
       if (await validateForm()) {
+        // Format names before creating user
+        const formattedFirstName = formatName(firstName);
+        const formattedLastName = formatName(lastName);
+        
         // Create new user object according to DB structure
         const newUser = {
-          name: `${firstName} ${lastName}`,
+          name: `${formattedFirstName} ${formattedLastName}`,
           email: email,
           password: password,
           phone: phone,
@@ -182,7 +225,6 @@ export default function SignupScreen() {
         console.log("User created:", data)
         
         // Navigate to success screen with user data
-        // navigation.navigate("SignupSuccess" as never, { user: data })
         console.log("User created successfully: ", data)
         router.push('/SignUpSuccess') // Navigate to the success screen
       }
@@ -242,7 +284,12 @@ export default function SignupScreen() {
                     placeholder="Enter your first name"
                     placeholderTextColor="#9CA3AF"
                     value={firstName}
-                    onChangeText={setFirstName}
+                    onChangeText={handleFirstNameChange}
+                    onBlur={() => {
+                      if (firstName && !firstName.trim().includes(" ")) {
+                        setFirstName(formatName(firstName));
+                      }
+                    }}
                   />
                 </View>
                 {errors.firstName ? <Text className="text-red-500 mt-1">{errors.firstName}</Text> : null}
@@ -258,7 +305,12 @@ export default function SignupScreen() {
                     placeholder="Enter your last name"
                     placeholderTextColor="#9CA3AF"
                     value={lastName}
-                    onChangeText={setLastName}
+                    onChangeText={handleLastNameChange}
+                    onBlur={() => {
+                      if (lastName && !lastName.trim().includes(" ")) {
+                        setLastName(formatName(lastName));
+                      }
+                    }}
                   />
                 </View>
                 {errors.lastName ? <Text className="text-red-500 mt-1">{errors.lastName}</Text> : null}
@@ -381,7 +433,7 @@ export default function SignupScreen() {
             {/* Login link */}
             <View className="flex-row justify-center mt-6">
               <Text className="text-gray-400">Already have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Login" as never)}>
+              <TouchableOpacity onPress={() => router.replace('/signIn')}>
                 <Text className="text-green-500 font-bold">Login</Text>
               </TouchableOpacity>
             </View>

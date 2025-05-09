@@ -53,6 +53,30 @@
       "password": "password",
       "phone": "0741356425",
       "devices": []
+    },
+    {
+      "id": "5bdc",
+      "name": "Allice Archard",
+      "email": "drarchardallice@gmail.com",
+      "password": "Allice123@",
+      "phone": "0766292828",
+      "devices": []
+    },
+    {
+      "id": "5292",
+      "name": "Glory  Kisanga",
+      "email": "glorykisanga8@gmail.com",
+      "password": "7040gl",
+      "phone": "0742192885",
+      "devices": []
+    },
+    {
+      "id": "d66c",
+      "name": "Yosia Lukumai",
+      "email": "yosialukumai@gmail.com",
+      "password": "Yosia1122",
+      "phone": "0710552244",
+      "devices": []
     }
   ],
   "devices": [

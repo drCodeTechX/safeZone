@@ -2,7 +2,6 @@ import { View, StyleSheet, Platform } from "react-native";
 import { Redirect, Tabs, useRouter } from "expo-router";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { StatusBar } from "expo-status-bar";
 
 
 //Icons Pool
@@ -14,7 +13,6 @@ import { AuthContext } from "@/context/AuthContext";
 
 export default function RootLayout() {
     const authState = useContext(AuthContext);
-    const router = useRouter();
 
     if( !authState.isReady ){ 
         return null;
