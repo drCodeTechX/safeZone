@@ -1,8 +1,82 @@
-import { View, Text, TouchableOpacity, ScrollView, TextInput } from "react-native"
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Modal, Alert, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { PlusCircle, Scan, Search, Wifi, Bluetooth } from "lucide-react-native"
+import { PlusCircle, Scan, X } from "lucide-react-native"
+import React, { useState } from 'react'
+import { useRouter } from 'expo-router'
+
+interface Contact {
+  name: string;
+  phone: string;
+}
+
+interface DeviceRegistration {
+  name: string;
+  location: string;
+  notifyList: Contact[];
+}
 
 export default function AddDeviceScreen() {
+  const router = useRouter()
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false)
+  const baseUrl = process.env.EXPO_PUBLI_API_URL;
+  const [registration, setRegistration] = useState<DeviceRegistration>({
+    name: "",
+    location: "",
+    notifyList: [{ name: "", phone: "" }]
+  });
+
+  const handleAddContact = () => {
+    setRegistration(prev => ({
+      ...prev,
+      notifyList: [...prev.notifyList, { name: "", phone: "" }]
+    }))
+  }
+
+  const handleContactChange = (index: number, field: keyof Contact, value: string) => {
+    setRegistration(prev => {
+      const newList = [...prev.notifyList]
+      newList[index] = { ...newList[index], [field]: value }
+      return { ...prev, notifyList: newList }
+    })
+  }
+
+  const handleRegistration = async () => {
+    try {
+      // Validate form
+      if (!registration.name || !registration.location || 
+          !registration.notifyList[0].name || !registration.notifyList[0].phone) {
+        Alert.alert('Missing Fields', 'Please fill in all required fields')
+        return
+      }
+
+      // Filter out empty contacts
+      const validContacts = registration.notifyList.filter(c => c.name && c.phone)
+      
+      const response = await fetch(`${baseUrl}/devices/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...registration,
+          notifyList: validContacts,
+          isRegistered: true
+        }),
+      })
+
+      if (response.ok) {
+        Alert.alert('Success', 'Device registered successfully')
+        setShowRegistrationModal(false)
+        router.push('/(tabs)')
+      } else {
+        Alert.alert('Error', 'Failed to register device')
+      }
+    } catch (error) {
+      console.error('Error registering device:', error)
+      Alert.alert('Error', 'Failed to register device')
+    }
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-[#0E1A25]">
       <ScrollView className="flex-1">
@@ -16,7 +90,14 @@ export default function AddDeviceScreen() {
               Add a new safeZone device to your SafeZone network to monitor for potential dangers.
             </Text>
 
-            <TouchableOpacity className="bg-green-500 p-4 rounded-lg flex-row items-center justify-center mb-4">
+            <TouchableOpacity 
+              onPress={() => Alert.alert(
+                'Feature Under Development',
+                'QR Code scanning is not available yet.',
+                [{ text: 'OK' }]
+              )}
+              className="bg-green-500 p-4 rounded-lg flex-row items-center justify-center mb-4"
+            >
               <Scan size={24} color="white" className="mr-2" />
               <Text className="text-white font-bold text-lg">Scan QR Code</Text>
             </TouchableOpacity>
@@ -81,6 +162,87 @@ export default function AddDeviceScreen() {
           </View>
         </View>
       </ScrollView>
+
+      {/* Registration Modal */}
+      <Modal
+        visible={showRegistrationModal}
+        onRequestClose={() => setShowRegistrationModal(false)}
+        animationType="slide"
+      >
+        <SafeAreaView className="flex-1 bg-[#0E1A25]">
+          <ScrollView className="flex-1">
+            <View className="p-4">
+              <View className="flex-row justify-between items-center mb-6">
+                <Text className="text-white text-xl font-bold">Register Device</Text>
+                <TouchableOpacity onPress={() => setShowRegistrationModal(false)}>
+                  <X color="white" size={24} />
+                </TouchableOpacity>
+              </View>
+
+              <View className="space-y-4">
+                <View>
+                  <Text className="text-gray-300 mb-2">Device Name</Text>
+                  <TextInput
+                    className="bg-gray-800 text-white p-4 rounded-lg"
+                    placeholder="Enter device name"
+                    placeholderTextColor="#666"
+                    value={registration.name}
+                    onChangeText={(text) => setRegistration(prev => ({ ...prev, name: text }))}
+                  />
+                </View>
+
+                <View>
+                  <Text className="text-gray-300 mb-2">Location</Text>
+                  <TextInput
+                    className="bg-gray-800 text-white p-4 rounded-lg"
+                    placeholder="Enter device location"
+                    placeholderTextColor="#666"
+                    value={registration.location}
+                    onChangeText={(text) => setRegistration(prev => ({ ...prev, location: text }))}
+                  />
+                </View>
+
+                <View>
+                  <Text className="text-gray-300 mb-2">Emergency Contacts</Text>
+                  {registration.notifyList.map((contact, index) => (
+                    <View key={index} className="mb-4">
+                      <TextInput
+                        className="bg-gray-800 text-white p-4 rounded-lg mb-2"
+                        placeholder="Contact name"
+                        placeholderTextColor="#666"
+                        value={contact.name}
+                        onChangeText={(text) => handleContactChange(index, 'name', text)}
+                      />
+                      <TextInput
+                        className="bg-gray-800 text-white p-4 rounded-lg"
+                        placeholder="Phone number"
+                        placeholderTextColor="#666"
+                        keyboardType="phone-pad"
+                        value={contact.phone}
+                        onChangeText={(text) => handleContactChange(index, 'phone', text)}
+                      />
+                    </View>
+                  ))}
+                  <TouchableOpacity
+                    onPress={handleAddContact}
+                    className="bg-blue-500 p-4 rounded-lg flex-row items-center justify-center"
+                  >
+                    <PlusCircle size={24} color="white" className="mr-2" />
+                    <Text className="text-white font-bold">Add Another Contact</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity
+                  onPress={handleRegistration}
+                  className="bg-green-500 p-4 rounded-lg flex-row items-center justify-center mt-6"
+                >
+                  <Text className="text-white font-bold text-lg">Register Device</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   )
 }

@@ -11,7 +11,7 @@ import { AuthContext } from "@/context/AuthContext"
 const logo: ImageSourcePropType = require("../assets/images/shield.png");
 
 // JSON Server API URL
-const API_URL = "http://192.168.1.100:3000";
+const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://192.168.1.108:3001";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("")

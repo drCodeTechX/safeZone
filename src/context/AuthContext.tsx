@@ -8,28 +8,28 @@ type AuthState = {
     isLoggedIn: boolean,
     isReady: boolean,
     user : IUser | null,
-    logIn: ( User : IUser) => void,
+    logIn: ( user?: IUser | null) => void,
     logOut: () => void
 }
 
 interface IUser {
-    id: number,
+    id: string,
     name: string,
     email: string,
     password: string,
     phone: string,
-    devices?: number[]
+    devices?: string[]
 }
 
 export const AuthContext = createContext<AuthState>({
     isLoggedIn: false,
     isReady: false,
     user: null,
-    logIn: ( ) => {},
+    logIn: () => {},
     logOut: () => {}
 });
 
-const storeAuthState = async(newState: { isLoggedIn : boolean}) => {
+const storeAuthState = async(newState: { isLoggedIn : boolean, user?: IUser | null}) => {
     try{
         await AsyncStorage.setItem("auth-state", JSON.stringify(newState));
     }catch(error){
@@ -43,18 +43,18 @@ export function AuthProvider({ children } : PropsWithChildren){
     const [ user, setUser ] = useState<IUser | null>(null);
     const router = useRouter();
     
-    const logIn = async ( User : IUser) => {
+    const logIn = async ( userParam?: IUser | null) => {
         setIsLoggedIn(true);
-        await setUser(User);
-        console.log(user);
-        storeAuthState({isLoggedIn: true});
+        setUser(userParam ?? null);
+        console.log('Logged in user:', userParam ?? null);
+        await storeAuthState({isLoggedIn: true, user: userParam ?? null});
         router.replace('/');
     }
 
     const logOut = () => {
         setIsLoggedIn(false);
         setUser(null);
-        storeAuthState({ isLoggedIn: false});
+        storeAuthState({ isLoggedIn: false, user: null});
         router.replace('/signIn');
     }
     
@@ -66,18 +66,42 @@ export function AuthProvider({ children } : PropsWithChildren){
 
     useEffect(() => {
         const getAuthFromStorage = async () => {
-            //Simulate delay
-            await new Promise((res) => setTimeout(() => res(null), 1000));
-            try{
-                const value = await AsyncStorage.getItem("auth-token");
-                if ( value !== null ){
+            try {
+                const value = await AsyncStorage.getItem("auth-state");
+                if (value !== null) {
                     const auth = JSON.parse(value);
-                    setIsLoggedIn(auth.isLoggedIn);
-                } 
-            }catch(error){
-                console.log("Failed to Fetch, ", error);
+                    
+                    // Validate the stored auth data
+                    if (auth.user && 
+                        typeof auth.user.id === 'string' && 
+                        auth.user.name && 
+                        auth.user.email) {
+                        
+                        console.log('Restoring auth state for user:', auth.user.name);
+                        setIsLoggedIn(true);
+                        setUser(auth.user);
+                        
+                        // Redirect to home if logged in
+                        if (auth.isLoggedIn) {
+                            router.replace('/');
+                        }
+                    } else {
+                        // Invalid stored data, clear it
+                        await AsyncStorage.removeItem("auth-state");
+                        setIsLoggedIn(false);
+                        setUser(null);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to restore auth state:", error);
+                // On error, clear the stored state
+                await AsyncStorage.removeItem("auth-state");
+                setIsLoggedIn(false);
+                setUser(null);
+            } finally {
+                setIsReady(true);
+                SplashScreen.hideAsync();
             }
-            setIsReady(true);
         };
         getAuthFromStorage();
     }, [])

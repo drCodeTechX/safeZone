@@ -6,6 +6,7 @@ import { useContext } from "react"
 
 export default function ProfileScreen() {
   const authState = useContext(AuthContext);
+  const user = authState?.user;
 
   return (
     <SafeAreaView className="flex-1 bg-[#0E1A25]">
@@ -18,20 +19,11 @@ export default function ProfileScreen() {
               <User size={60} color="white" />
             </View>
 
-            <Text className="text-white text-xl font-bold">User Name</Text>
-            <Text className="text-gray-400">user@example.com</Text>
+            <Text className="text-white text-xl font-bold">{user?.name}</Text>
+            <Text className="text-gray-400">{user?.email}</Text>
           </View>
 
-          <View className="space-y-4">
-            <TouchableOpacity className="flex-row items-center bg-gray-800/50 p-4 rounded-lg">
-              <Settings size={24} color="#10B981" className="mr-4" />
-              <Text className="text-white text-lg">Account Settings</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity className="flex-row items-center bg-gray-800/50 p-4 rounded-lg">
-              <Bell size={24} color="#10B981" className="mr-4" />
-              <Text className="text-white text-lg">Notifications</Text>
-            </TouchableOpacity>
+          <View className="flex flex-col gap-3">
 
             <TouchableOpacity className="flex-row items-center bg-gray-800/50 p-4 rounded-lg">
               <HelpCircle size={24} color="#10B981" className="mr-4" />
