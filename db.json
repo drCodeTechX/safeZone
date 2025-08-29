@@ -1,34 +1,22 @@
 {
+  "system-status": {
+    "onlineDevices": 3,
+    "offlineDevices": 1,
+    "activeAlerts": 0,
+    "lastUpdate": "2025-08-28T12:00:00Z",
+    "systemHealth": 100
+  },
   "users": [
-    {
-      "id": "1",
-      "name": "John Doe",
-      "email": "john@example.com",
-      "password": "password123",
-      "phone": "+255 712 345 678",
-      "devices": [
-        1,
-        2,
-        3
-      ]
-    },
-    {
-      "id": "2",
-      "name": "Jane Smith",
-      "email": "jane@example.com",
-      "password": "password456",
-      "phone": "+255 787 654 321",
-      "devices": [
-        4
-      ]
-    },
     {
       "id": "6a15",
       "name": "Allord Archard",
-      "email": "drarchardallord@gmail.com",
-      "password": "Nancy15012007",
+      "email": "intern@gilgaltech.com",
+      "password": "intern",
       "phone": "0711353844",
-      "devices": []
+      "devices": [
+        "1",
+        "2"
+      ]
     },
     {
       "id": "4d6d",
@@ -36,7 +24,10 @@
       "email": "david@gmail.com",
       "password": "Pass1122",
       "phone": "0788546312",
-      "devices": []
+      "devices": [
+        "3",
+        "4"
+      ]
     },
     {
       "id": "c38e",
@@ -44,7 +35,10 @@
       "email": "coffee@gmail.com",
       "password": "Coffee123",
       "phone": "0711353845",
-      "devices": []
+      "devices": [
+        "1",
+        "2"
+      ]
     },
     {
       "id": "486b",
@@ -52,98 +46,194 @@
       "email": "davidq@gmail.com",
       "password": "password",
       "phone": "0741356425",
-      "devices": []
-    },
-    {
-      "id": "5bdc",
-      "name": "Allice Archard",
-      "email": "drarchardallice@gmail.com",
-      "password": "Allice123@",
-      "phone": "0766292828",
-      "devices": []
-    },
-    {
-      "id": "5292",
-      "name": "Glory  Kisanga",
-      "email": "glorykisanga8@gmail.com",
-      "password": "7040gl",
-      "phone": "0742192885",
-      "devices": []
-    },
-    {
-      "id": "d66c",
-      "name": "Yosia Lukumai",
-      "email": "yosialukumai@gmail.com",
-      "password": "Yosia1122",
-      "phone": "0710552244",
-      "devices": []
+      "devices": [
+        "3",
+        "4"
+      ]
     }
   ],
   "devices": [
     {
       "id": "1",
-      "name": "Living Room Sensor",
-      "type": "Motion Sensor",
+      "serial": "SFZN000001",
+      "name": "Garage Temperature Sensor",
       "status": "online",
-      "lastActive": "2023-05-06T14:30:00Z",
-      "batteryLevel": 85,
-      "location": "Living Room"
+      "isRegistered": true,
+      "lastActive": "2025-08-29T10:11:36Z",
+      "batteryLevel": 74,
+      "plan": "Pro",
+      "notifyList": [
+        {
+          "name": "Jane Doe",
+          "phone": "+255712345678"
+        },
+        {
+          "name": "John Smith",
+          "phone": "+255712345678"
+        }
+      ]
     },
     {
       "id": "2",
-      "name": "Kitchen Smoke Detector",
-      "type": "Smoke Detector",
+      "serial": "SFZN000002",
+      "name": "Living Room Motion Sensor",
       "status": "online",
-      "lastActive": "2023-05-06T15:45:00Z",
-      "batteryLevel": 92,
-      "location": "Kitchen"
+      "isRegistered": true,
+      "lastActive": "2025-08-29T10:46:36Z",
+      "batteryLevel": 89,
+      "plan": "Basic",
+      "notifyList": [
+        {
+          "name": "Alice Johnson",
+          "phone": "+255745678901"
+        },
+        {
+          "name": "Emergency Contact",
+          "phone": "+255745678901"
+        }
+      ]
     },
     {
       "id": "3",
-      "name": "Bedroom Motion Sensor",
-      "type": "Motion Sensor",
+      "serial": "SFZN000003",
+      "name": "Bedroom Smoke Detector",
       "status": "online",
-      "lastActive": "2023-05-06T16:20:00Z",
-      "batteryLevel": 78,
-      "location": "Bedroom"
+      "isRegistered": true,
+      "lastActive": "2025-08-29T10:28:36Z",
+      "batteryLevel": 58,
+      "plan": "Pro",
+      "notifyList": [
+        {
+          "name": "Alice Johnson",
+          "phone": "+255745678901"
+        },
+        {
+          "name": "Jane Doe",
+          "phone": "+255712345678"
+        }
+      ]
     },
     {
       "id": "4",
+      "serial": "SFZN000004",
       "name": "Garage Door Sensor",
-      "type": "Contact Sensor",
-      "status": "offline",
-      "lastActive": "2023-05-05T09:15:00Z",
-      "batteryLevel": 23,
-      "location": "Garage"
+      "status": "online",
+      "isRegistered": true,
+      "lastActive": "2025-08-29T10:34:36Z",
+      "batteryLevel": 74,
+      "plan": "Basic",
+      "notifyList": [
+        {
+          "name": "Alice Johnson",
+          "phone": "+255734567890"
+        },
+        {
+          "name": "Jane Doe",
+          "phone": "+255745678901"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "serial": "SFZN000005",
+      "name": "Garage Smoke Detector",
+      "status": "online",
+      "isRegistered": true,
+      "lastActive": "2025-08-29T10:29:36Z",
+      "batteryLevel": 48,
+      "plan": "Pro",
+      "notifyList": [
+        {
+          "name": "Jane Doe",
+          "phone": "+255734567890"
+        },
+        {
+          "name": "John Smith",
+          "phone": "+255712345678"
+        }
+      ]
     }
   ],
-  "alerts": [
+  "device-logs": [
     {
       "id": "1",
-      "deviceId": 2,
-      "type": "smoke_detected",
-      "message": "Smoke detected in Kitchen",
-      "severity": "high",
-      "timestamp": "2023-05-04T18:30:00Z",
-      "resolved": true
+      "device_id": "1",
+      "temperature": 22.5,
+      "humidity": 45.0,
+      "motion": 0,
+      "smoke": 0,
+      "batteryLevel": 74,
+      "timestamp": "2025-08-29T10:00:00Z"
     },
     {
       "id": "2",
-      "deviceId": 1,
-      "type": "motion_detected",
-      "message": "Unexpected motion detected in Living Room",
-      "severity": "medium",
-      "timestamp": "2023-05-05T02:15:00Z",
-      "resolved": true
+      "device_id": "1",
+      "temperature": 23.0,
+      "humidity": 46.0,
+      "motion": 0,
+      "smoke": 0,
+      "batteryLevel": 73,
+      "timestamp": "2025-08-29T10:10:00Z"
     },
     {
       "id": "3",
-      "deviceId": 4,
-      "type": "battery_low",
-      "message": "Battery level critical for Garage Door Sensor",
-      "severity": "low",
-      "timestamp": "2023-05-06T10:45:00Z",
-      "resolved": false
+      "device_id": "1",
+      "temperature": 23.5,
+      "humidity": 47.0,
+      "motion": 0,
+      "smoke": 0,
+      "batteryLevel": 72,
+      "timestamp": "2025-08-29T10:20:00Z"
+    },
+    {
+      "id": "4",
+      "device_id": "1",
+      "temperature": 24.0,
+      "humidity": 48.0,
+      "motion": 0,
+      "smoke": 0,
+      "batteryLevel": 71,
+      "timestamp": "2025-08-29T10:30:00Z"
+    },
+    {
+      "id": "5",
+      "device_id": "2",
+      "temperature": 21.0,
+      "humidity": 50.0,
+      "motion": 1,
+      "smoke": 0,
+      "batteryLevel": 89,
+      "timestamp": "2025-08-29T10:00:00Z"
+    },
+    {
+      "id": "6",
+      "device_id": "2",
+      "temperature": 21.5,
+      "humidity": 51.0,
+      "motion": 1,
+      "smoke": 0,
+      "batteryLevel": 88,
+      "timestamp": "2025-08-29T10:10:00Z"
+    },
+    {
+      "id": "7",
+      "device_id": "2",
+      "temperature": 22.0,
+      "humidity": 52.0,
+      "motion": 1,
+      "smoke": 0,
+      "batteryLevel": 87,
+      "timestamp": "2025-08-29T10:20:00Z"
+    },
+    {
+      "id": "8",
+      "device_id": "2",
+      "temperature": 22.5,
+      "humidity": 53.0,
+      "motion": 1,
+      "smoke": 0,
+      "batteryLevel": 86,
+      "timestamp": "2025-08-29T10:30:00Z"
     }
   ]
 }

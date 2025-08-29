@@ -1,24 +1,14 @@
-# Expo starter
+clone the project
+Create .env file name and add a variable 
 
-A plain project with the usual suspects set up:
+EXPO_PUBLIC_API_URL=http://{YOUR IP ADRESS}:{THE PORT YOU WANT TO RUN THE SERVICE ON}
 
-- Expo Router
-- Nativewind
-- ESLint & Prettier
-- TypeScript
+do the following commands
 
-It also contains two components:
-- `src/components/AppText.tsx` for text
-- `src/components/Button.tsx` for 3 button variants
+npm install
+npm run start:dev (in separate terminal)
+npm run start (in separate terminal)
 
-And one utility:
-- `src/utils/cn.ts` for merging Tailwind classes
-
-## Start a new project with this template
-
-```sh
-git clone git@github.com:kadikraman/expo-starter.git my-app
-cd my-app
-cd my-app && rm -rf .git && git init && git add . && git commit -m "Initial commit"
-bun install # or remove the bun.lock file and use a different package manager
-```
+Install expo go app, SDK53
+Scan the expo go qr code, 
+There you are :)

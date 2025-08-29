@@ -1,16 +1,12 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Shield, Bell, AlertTriangle, CheckCircle } from "lucide-react-native"
 import { authUser } from "@/context/AuthContext"
+import { useSystemStatus } from "@/hooks/useSystemStatus"
+import SystemStatusCircle from "@/components/SystemStatusCircle"
 
 export default function HomeScreen() {
-
-  // Mock data for device status
-  const deviceStatus = {
-    online: 3,
-    offline: 1,
-    alerts: 0,
-  }
+  const { status, loading, error } = useSystemStatus();
   
   const auth = authUser();
   const user = auth ? auth : null; // Replace 'user' with the correct property name
@@ -30,60 +26,56 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Hero section with image option */}
+          {/* Hero section with status circle */}
           <View className="bg-gray-800/30 rounded-xl overflow-hidden mb-6">
-            {/* Option for custom hero image */}
-            {/* <Image 
-              source={require('../assets/hero-image.jpg')} 
-              style={{ width: '100%', height: 150 }} 
-              resizeMode="cover"
-            /> */}
-
-            {/* Placeholder for hero image */}
-            <View className="h-[150px] bg-gray-700/50 items-center justify-center">
-              <Text className="text-gray-400">Place for Hero Image</Text>
-            </View>
-
-            <View className="p-5">
-              <Text className="text-white text-xl font-bold mb-2">SafeZone Security Dashboard</Text>
-              <Text className="text-gray-300 mb-4">
-                Monitor and manage your IoT security devices from one central location. Get real-time alerts and
-                comprehensive analytics.
-              </Text>
-              <TouchableOpacity className="bg-green-500/20 py-2 px-4 rounded-lg self-start">
-                <Text className="text-green-400 font-medium">View Analytics</Text>
-              </TouchableOpacity>
-            </View>
+            <SystemStatusCircle isSystemSafe={status.isSystemSafe} />
           </View>
 
           {/* Status overview */}
           <View className="mb-6">
             <Text className="text-white text-xl font-bold mb-4">System Status</Text>
-            <View className="bg-gray-800/30 rounded-xl p-5">
-              <View className="flex-row justify-between mb-4">
-                <View className="items-center">
-                  <Text className="text-green-400 text-2xl font-bold">{deviceStatus.online}</Text>
-                  <Text className="text-gray-400">Online</Text>
-                </View>
-                <View className="items-center">
-                  <Text className="text-red-400 text-2xl font-bold">{deviceStatus.offline}</Text>
-                  <Text className="text-gray-400">Offline</Text>
-                </View>
-                <View className="items-center">
-                  <Text className="text-yellow-400 text-2xl font-bold">{deviceStatus.alerts}</Text>
-                  <Text className="text-gray-400">Alerts</Text>
-                </View>
+            {loading ? (
+              <View className="items-center justify-center p-8">
+                <ActivityIndicator size="large" color="#10B981" />
               </View>
+            ) : error ? (
+              <View className="bg-red-500/20 p-4 rounded-xl">
+                <Text className="text-red-400 text-center">{error}</Text>
+              </View>
+            ) : (
+              <View className="bg-gray-800/30 rounded-xl p-5">
+                <View className="flex-row justify-between mb-4">
+                  <View className="items-center">
+                    <Text className="text-green-400 text-2xl font-bold">{status.online}</Text>
+                    <Text className="text-gray-400">Online</Text>
+                  </View>
+                  <View className="items-center">
+                    <Text className="text-red-400 text-2xl font-bold">{status.offline}</Text>
+                    <Text className="text-gray-400">Offline</Text>
+                  </View>
+                  <View className="items-center">
+                    <Text className="text-yellow-400 text-2xl font-bold">{status.alerts}</Text>
+                    <Text className="text-gray-400">Alerts</Text>
+                  </View>
+                </View>
 
-              <View className="bg-gray-700/50 h-2 rounded-full w-full mb-2">
-                <View className="bg-green-500 h-2 rounded-full" style={{ width: "75%" }} />
+                <View className="bg-gray-700/50 h-2 rounded-full w-full mb-2">
+                  <View 
+                    className="bg-green-500 h-2 rounded-full" 
+                    style={{ 
+                      width: `${(status.online / (status.online + status.offline) * 100)}%` 
+                    }} 
+                  />
+                </View>
+                <Text className="text-gray-400 text-right text-xs">
+                  {Math.round((status.online / (status.online + status.offline) * 100))}% devices online
+                </Text>
               </View>
-              <Text className="text-gray-400 text-right text-xs">75% devices online</Text>
-            </View>
+            )}
           </View>
 
           {/* Recent activity */}
-          <View className="mb-6">
+          <View className="mb-32">
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-white text-xl font-bold">Recent Activity</Text>
               <TouchableOpacity>
@@ -127,24 +119,6 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Quick actions */}
-          <View>
-            <Text className="text-white text-xl font-bold mb-4">Quick Actions</Text>
-            <View className="flex-row flex-wrap justify-between">
-              <TouchableOpacity className="bg-gray-800/30 p-4 rounded-lg w-[48%] items-center mb-3">
-                <Text className="text-white font-medium">Add Device</Text>
-              </TouchableOpacity>
-              <TouchableOpacity className="bg-gray-800/30 p-4 rounded-lg w-[48%] items-center mb-3">
-                <Text className="text-white font-medium">Run Scan</Text>
-              </TouchableOpacity>
-              <TouchableOpacity className="bg-gray-800/30 p-4 rounded-lg w-[48%] items-center">
-                <Text className="text-white font-medium">View Reports</Text>
-              </TouchableOpacity>
-              <TouchableOpacity className="bg-gray-800/30 p-4 rounded-lg w-[48%] items-center">
-                <Text className="text-white font-medium">Settings</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

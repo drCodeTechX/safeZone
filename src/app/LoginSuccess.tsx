@@ -2,22 +2,19 @@ import { useContext, useEffect } from "react"
 import { View, Text, ActivityIndicator } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { CheckCircle } from "lucide-react-native"
-import { useNavigation } from "@react-navigation/native"
-import { useRouter } from "expo-router"
 import { AuthContext } from "@/context/AuthContext"
 
 export default function LoginSuccessScreen() {
-  const navigation = useNavigation()
-  const authState = useContext(AuthContext);
+  const { logIn } = useContext(AuthContext);
 
   useEffect(() => {
     // Automatically navigate to main app after 2 seconds
     const timer = setTimeout(() => {
-      authState.logIn();
+      logIn();
     }, 2000)
 
     return () => clearTimeout(timer)
-  }, [navigation])
+  }, [logIn])
 
   return (
     <SafeAreaView className="flex-1 bg-[#0E1A25]">

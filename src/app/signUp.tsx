@@ -9,7 +9,7 @@ import { useRouter } from "expo-router"
 const logo : ImageSourcePropType = require("../assets/images/shield.png");
 
 // JSON Server API URL
-const API_URL = "http://192.168.1.100:3000";
+const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://192.168.1.108:3010";
 
 export default function SignupScreen() {
   //router
